@@ -5,40 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Builder</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="form-container">
         <h1>Resume Builder</h1>
-        <form id="resumeForm">
-    <label for="photo">Upload Your Photo:</label>
-    <input type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto()">
 
-    <label for="name">Full Name:</label>
-    <input type="text" id="name" name="name" required>
+        <!-- Photo Upload -->
+        <label>Upload Your Photo:</label>
+        <input type="file" id="photoUpload" accept="image/*">
+        <img id="previewImage" style="display: none; width: 100px; height: 100px; border-radius: 50%;">
 
-    <label for="email">Email Address:</label>
-    <input type="email" id="email" name="email" required>
+        <!-- Form Inputs -->
+        <div class="form-group">
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone">
+        </div>
+        <div class="form-group">
+            <label for="summary">Professional Summary:</label>
+            <textarea id="summary"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="skills">Skills (comma-separated):</label>
+            <input type="text" id="skills">
+        </div>
+        <div class="form-group">
+            <label for="experience">Work Experience:</label>
+            <textarea id="experience"></textarea>
+        </div>
 
-    <label for="phone">Phone Number:</label>
-    <input type="tel" id="phone" name="phone" required>
+        <!-- Resume Preview -->
+        <h2>Live Preview</h2>
+        <div id="livePreview"></div>
 
-    <label for="summary">Professional Summary:</label>
-    <textarea id="summary" name="summary" rows="4" required></textarea>
+        <!-- Download Resume -->
+        <button id="downloadPDF">Download Resume</button>
+    </div>
 
-    <label for="skills">Skills (comma-separated):</label>
-    <input type="text" id="skills" name="skills" required>
-
-    <label for="workExperience">Work Experience:</label>
-    <textarea id="workExperience" name="workExperience" rows="4" required></textarea>
-
-    <label for="education">Education:</label>
-    <textarea id="education" name="education" rows="4" required></textarea>
-
-    <button type="button" onclick="generateResume()">Generate Resume</button>
-</form>
-
-<!-- Add an area to display the resume -->
-<div id="resumeOutput" class="resume-output">
-    <div id="photoPreview" class="photo-preview"></div>
-</div>
-
+    <script src="script.js"></script>
+</body>
+</html>

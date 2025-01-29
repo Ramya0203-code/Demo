@@ -1,48 +1,48 @@
-function previewPhoto() {
-    const photoInput = document.getElementById("photo");
-    const photoPreview = document.getElementById("photoPreview");
-
-    // Check if a file was uploaded
-    if (photoInput.files && photoInput.files[0]) {
+// 1️⃣ Preview Uploaded Photo
+document.getElementById('photoUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
-            // Set the uploaded photo as the preview
-            photoPreview.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
-            photoPreview.style.display = "block";
+        reader.onload = function(e) {
+            const img = document.getElementById('previewImage');
+            img.src = e.target.result;
+            img.style.display = "block";
         };
-        reader.readAsDataURL(photoInput.files[0]);
+        reader.readAsDataURL(file);
     }
-}
+});
 
-function generateResume() {
-    // Get form values
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const phone = document.getElementById("phone").value;
-    const summary = document.getElementById("summary").value;
-    const skills = document.getElementById("skills").value;
-    const workExperience = document.getElementById("workExperience").value;
-    const education = document.getElementById("education").value;
-    const photoPreview = document.getElementById("photoPreview").innerHTML;
+// 2️⃣ Auto-Save Form Data
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        input.value = localStorage.getItem(input.id) || '';
+        input.addEventListener('input', () => {
+            localStorage.setItem(input.id, input.value);
+        });
+    });
+});
 
-    // Create the resume output
-    const resumeOutput = `
-        <div class="resume-container">
-            ${photoPreview} <!-- Include the photo preview -->
-            <h2>${name}</h2>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <h3>Professional Summary</h3>
-            <p>${summary}</p>
-            <h3>Skills</h3>
-            <p>${skills}</p>
-            <h3>Work Experience</h3>
-            <p>${workExperience}</p>
-            <h3>Education</h3>
-            <p>${education}</p>
-        </div>
-    `;
+// 3️⃣ Live Preview Feature
+document.getElementById('summary').addEventListener('input', function() {
+    document.getElementById('livePreview').innerText = this.value;
+});
 
-    // Display the resume
-    document.getElementById("resumeOutput").innerHTML = resumeOutput;
-}
+// 4️⃣ Download Resume as PDF
+document.getElementById('downloadPDF').addEventListener('click', function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Resume", 90, 10);
+
+    doc.setFont("helvetica", "normal");
+    doc.text(`Full Name: ${document.getElementById('fullname').value}`, 10, 20);
+    doc.text(`Email: ${document.getElementById('email').value}`, 10, 30);
+    doc.text(`Phone: ${document.getElementById('phone').value}`, 10, 40);
+    doc.text(`Summary: ${document.getElementById('summary').value}`, 10, 50);
+    doc.text(`Skills: ${document.getElementById('skills').value}`, 10, 60);
+    doc.text(`Experience: ${document.getElementById('experience').value}`, 10, 70);
+
+    doc.save("Resume.pdf");
+});
